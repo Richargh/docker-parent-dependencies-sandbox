@@ -1,0 +1,21 @@
+= Docker with Parent Dependencies (Sandbox)
+
+Dockerfiles cannot include files from parent directories because only the files in the current directory are sent to the docker daemon when running `docker build .`.
+
+That means that `store/Dockerfile` cannot reference another folder or file like `../common`. 
+This is a problem if you want to have one project `store/Store.csproj` reference annother project `common/Common.csproj`.
+
+You can solve this problem in one of two ways that I know of:
+
+. Start your docker daemon from the parent directory (`docker build -f common/Dockerfile .`). But then you send everything in the parent directory to the docker daemon. Depending on your use case that might be more stuff then you can manage with a `.dockerignore`
+. Create a local docker image for your common project (`docker build -t sandbox-common .`), use the project in your other Dockerfile (`FROM sandbox-common as c`) and then copy the files from the other image to your current one (`COPY --from=c /src/common/ /src/common/`).
+
+== Usage
+
+Directly through docker:
+
+. Go to common `cd common`
+. Build and tag common image `docker build -t sandbox-common .`
+. Go to store `cd ../store`
+. Build and optionally tag store image that uses common `docker build -t sandbox-store .`
+. Happiness :)
