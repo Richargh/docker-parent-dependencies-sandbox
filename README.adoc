@@ -12,10 +12,14 @@ You can solve this problem in one of two ways that I know of:
 
 == Usage
 
-Directly through docker:
+Using docker:
 
 . Go to common `cd common`
 . Build and tag common image `docker build -t sandbox-common .`
 . Go to store `cd ../store`
 . Build and optionally tag store image that uses common `docker build -t sandbox-store .`
 . Happiness :)
+
+Using docker-compose:
+
+. From the root folder run docker-compose `docker-compose build`

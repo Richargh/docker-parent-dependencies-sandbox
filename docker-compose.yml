@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  common:
+    image: sandbox-common
+    build: 
+      context: common
+      dockerfile: Dockerfile
+  store:
+    image: sandbox-store
+    build: 
+      context: store
+      dockerfile: Dockerfile
+    depends_on: 
+      - common
